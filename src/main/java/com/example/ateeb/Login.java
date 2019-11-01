@@ -37,23 +37,26 @@ public class Login
 
     private UserRepository userRepository;
 
-    @GetMapping("/login/{name}")
-    public String getAllEmployees(@PathVariable("name") String name) throws SQLException {
+    @GetMapping("/login/{name}/{password}")
+    public String getAllEmployees(@PathVariable("name") String name,@PathVariable("password") String pass) throws SQLException {
 
         Connection db = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=MunazamDB","Munazam","lotus123");
         Statement stmt = db.createStatement( );
-        System.out.println(name);
-        UserData d = new UserData();
-        d.setID("12");
-        d.setName("hello");
-        d.setPassword("12347");
-        d.setUniid("k163847");
-        String sqlQuery = "select * from Users";
+
+        String sqlQuery = "select * from users where name = '"+name+"';";
         ResultSet rs = stmt.executeQuery(sqlQuery);
         rs.next();
-        String first_name = rs.getString("uniid");
+        String password = rs.getString("password");
+        if(pass.equals(password))
+        {
+            return "ok";
+        }
+        else
+        {
+            return "notok";
+        }
         //userRepository.save(d);
-        return first_name;
+
 
     }
 }
