@@ -1,10 +1,15 @@
-package com.example.ateeb;
+package com.example.ateeb.Models;
 
 public class Book
 {
     long id;
     String name;
     String author;
+
+    public Book()
+    {
+
+    }
 
     public Book(long id, String name, String author) {
         super();

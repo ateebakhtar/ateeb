@@ -1,4 +1,4 @@
-package com.example.ateeb;
+package com.example.ateeb.Models;
 
 public class UserData
 {
@@ -15,7 +15,7 @@ public class UserData
         this.uniid = uniid;
     }
 
-    UserData()
+    public UserData()
     {
 
     }

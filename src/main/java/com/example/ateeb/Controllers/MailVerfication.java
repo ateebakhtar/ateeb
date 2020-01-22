@@ -1,4 +1,4 @@
-package com.example.ateeb;
+package com.example.ateeb.Controllers;
 
 import com.sun.mail.smtp.SMTPTransport;
 import org.springframework.web.bind.annotation.GetMapping;
