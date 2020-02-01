@@ -68,7 +68,20 @@ public class Login
             String sqlQuery = "select * from users where ID = "+idd+";";
             ResultSet rs = stmt.executeQuery(sqlQuery);
             rs.next();
-            String sem = rs.getString("semester");
+            String sem = "1";
+            if(!rs.next())
+            {
+                return "3";
+            }
+            if(rs.getString("semester")!=null)
+            {
+                 sem = rs.getString("semester");
+            }
+            else
+            {
+                sem = "3";
+            }
+
             return sem;
         }
 

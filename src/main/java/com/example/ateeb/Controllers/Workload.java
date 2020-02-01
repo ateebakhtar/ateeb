@@ -44,7 +44,10 @@ public class Workload
         int idtt = Integer.parseInt(id12);
         String sqlQuery = "select * from reminder ;";
         rs = stmt.executeQuery(sqlQuery);
-
+        if(!rs.next())
+        {
+            return null;
+        }
         ob = new com.example.ateeb.Models.Workload();
         wk = new ArrayList<com.example.ateeb.Models.Workload>();
 

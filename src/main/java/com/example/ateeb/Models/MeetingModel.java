@@ -2,7 +2,7 @@ package com.example.ateeb.Models;
 
 public class MeetingModel
 {
-    public MeetingModel(int id, String course, String name, String uniid, String time, String date, String venue) {
+    public MeetingModel(int id, String course, String name, String uniid, String time, String date, String venue,String capacity,String topic,String description ) {
         this.id = id;
         this.course = course;
         this.name = name;
@@ -10,9 +10,38 @@ public class MeetingModel
         this.time = time;
         this.date = date;
         this.venue = venue;
+        this.capacity = capacity;
+        this.topic = topic;
+        this.description = description;
     }
 
+    public String getCapacity() {
+        return capacity;
+    }
 
+    public void setCapacity(String capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    String topic;
+    String description;
+    String capacity;
     int id;
     String course;
     String name;

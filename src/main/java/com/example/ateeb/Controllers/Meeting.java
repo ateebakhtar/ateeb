@@ -13,12 +13,12 @@ import java.util.ArrayList;
 @RestController
 public class Meeting
 {
-    @GetMapping("/meeting/{course}/{name}/{id}/{venue}/{time}/{date}")
-    public String addmeeting(@PathVariable("course") String course,@PathVariable("name") String name,@PathVariable("id") String id,@PathVariable("venue") String venue,@PathVariable("time") String time,@PathVariable("date") String date) throws SQLException {
+    @GetMapping("/meeting/{course}/{name}/{id}/{venue}/{time}/{date}/{capacity}/{topic}/{description}")
+    public String addmeeting(@PathVariable("course") String course,@PathVariable("name") String name,@PathVariable("id") String id,@PathVariable("venue") String venue,@PathVariable("time") String time,@PathVariable("date") String date,@PathVariable("capacity") String capacity,@PathVariable("topic") String topic,@PathVariable("description") String description) throws SQLException {
 
         Connection db = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=MunazamDB","Munazam","lotus123");
         Statement stmt = db.createStatement( );
-        String sqlQuery = "insert into meetinglist (course,name,uniid,venue,time ,date) values ('"+course+"','"+name+"','"+id+"','"+venue+"','"+time+"','"+date+"');\n";
+        String sqlQuery = "insert into meetinglist (course,name,uniid,venue,time ,date,capacity,topic,description) values ('"+course+"','"+name+"','"+id+"','"+venue+"','"+time+"','"+date+"','"+capacity+"','"+topic+"','"+description+"');\n";
         stmt.execute(sqlQuery);
         return "ok";
     }
@@ -42,8 +42,11 @@ public class Meeting
             String venue= rs.getString("venue");
             String time= rs.getString("time");
             String date= rs.getString("date");
+            String capacity = rs.getString("capacity");
+            String topic= rs.getString("topic");
+            String description = rs.getString("description");
             int idd = Integer.parseInt(id);
-            MeetingModel temp = new MeetingModel(idd,course,name,uniid,time,date,venue);
+            MeetingModel temp = new MeetingModel(idd,course,name,uniid,time,date,venue,capacity,topic,description);
             rem.add(temp);
         }
         return rem;
@@ -53,9 +56,24 @@ public class Meeting
 
         Connection db = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=MunazamDB","Munazam","lotus123");
         Statement stmt = db.createStatement( );
+        Statement stmt1 = db.createStatement( );
+        Statement stmt2 = db.createStatement( );
         int idd = Integer.parseInt(id);
         String sqlQuery = "insert into meetingattendee (name ,student_id,meetingid) values ('"+name+"','"+uniid+"',"+idd+");\n";
+
+        String sqlQuery1 = "select capacity from meetinglist where id = "+idd+";\n";
         stmt.execute(sqlQuery);
+        ResultSet rs = stmt1.executeQuery(sqlQuery1);
+        rs.next();
+        String count = rs.getString("capacity");
+
+        int capacity = Integer.parseInt(count);
+        capacity--;
+        sqlQuery = "update meetinglist " +
+                "SET capacity = '"+capacity+"'"+
+                "where ID = "+idd+";";
+
+        stmt2.execute(sqlQuery);
         return "ok";
     }
     @GetMapping("/getattendees/{id}")
@@ -65,10 +83,7 @@ public class Meeting
         Statement stmt = db.createStatement( );
 
         int x = Integer.parseInt(idq);
-
         String sqlQuery = "select * from meetingattendee where ID = "+x+";";
-
-
 
         ArrayList<AttendeesModel> rem = new ArrayList<AttendeesModel>();
         ResultSet rs = stmt.executeQuery(sqlQuery);
