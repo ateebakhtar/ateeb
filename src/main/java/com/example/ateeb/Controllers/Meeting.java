@@ -66,6 +66,64 @@ public class Meeting
         }
         return rem;
     }
+
+    @GetMapping("/meetinglist/{uniid}")
+    public ArrayList<MeetingModel> getmymeeting(@PathVariable("uniid")String uniid) throws SQLException{
+
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=MunazamDB","Munazam","lotus123");
+        Statement stmt = db.createStatement( );
+        String sqlQuery = "select * from meetinglist where uniid = '"+uniid+"';";
+
+        ArrayList<MeetingModel> rem = new ArrayList<MeetingModel>();
+        ResultSet rs = stmt.executeQuery(sqlQuery);
+        //rs.next();
+        while(rs.next())
+        {
+            String id = rs.getString("ID");
+            String name = rs.getString("name");
+            String course= rs.getString("course");
+            String uniidd= rs.getString("uniid");
+            String venue= rs.getString("venue");
+            String time= rs.getString("time");
+            String date= rs.getString("date");
+            String capacity = rs.getString("capacity");
+            String topic= rs.getString("topic");
+            String description = rs.getString("description");
+            int idd = Integer.parseInt(id);
+            MeetingModel temp = new MeetingModel(idd,course,name,uniidd,time,date,venue,capacity,topic,description);
+            rem.add(temp);
+        }
+        return rem;
+    }
+    @GetMapping("/joinedmeeting/{uniid}")
+    public ArrayList<MeetingModel> joinedmeeting(@PathVariable("uniid")String uniid) throws SQLException{
+
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=MunazamDB","Munazam","lotus123");
+        Statement stmt = db.createStatement( );
+        String sqlQuery = "select * from meetinglist as x,meetingattendee as y where y.student_id = '"+uniid+"' and x.ID = y.meetingid;";
+
+        ArrayList<MeetingModel> rem = new ArrayList<MeetingModel>();
+        ResultSet rs = stmt.executeQuery(sqlQuery);
+        //rs.next();
+        while(rs.next())
+        {
+            String id = rs.getString("ID");
+            String name = rs.getString("name");
+            String course= rs.getString("course");
+            String uniidd= rs.getString("uniid");
+            String venue= rs.getString("venue");
+            String time= rs.getString("time");
+            String date= rs.getString("date");
+            String capacity = rs.getString("capacity");
+            String topic= rs.getString("topic");
+            String description = rs.getString("description");
+            int idd = Integer.parseInt(id);
+            MeetingModel temp = new MeetingModel(idd,course,name,uniidd,time,date,venue,capacity,topic,description);
+            rem.add(temp);
+        }
+        return rem;
+    }
+
     @GetMapping("/joinmeeting/{id}/{name}/{uniid}")
     public String joinmeeting(@PathVariable("id") String id,@PathVariable("name") String name,@PathVariable("uniid") String uniid)  throws SQLException {
 
