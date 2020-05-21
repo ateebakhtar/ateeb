@@ -35,7 +35,7 @@ public class Meeting
         String sqlQuery = "insert into meetinglist (course,name,uniid,venue,time ,date,capacity,topic,description) values ('"+course+"','"+name+"','"+id+"','"+venue+"','"+time+"','"+date+"','"+capacity+"','"+topic+"','"+description+"');\n";
         stmt.execute(sqlQuery);
         sendnotification(topic);
-        return "ok";
+        return "ok MEETING";
     }
 
     @GetMapping("/meetinglist")
@@ -133,9 +133,9 @@ public class Meeting
         Statement stmt2 = db.createStatement( );
         int idd = Integer.parseInt(id);
         String sqlQuery = "insert into meetingattendee (name ,student_id,meetingid) values ('"+name+"','"+uniid+"',"+idd+");\n";
-
-        String sqlQuery1 = "select capacity from meetinglist where id = "+idd+";\n";
         stmt.execute(sqlQuery);
+        String sqlQuery1 = "select capacity from meetinglist where id = "+idd+";\n";
+
         ResultSet rs = stmt1.executeQuery(sqlQuery1);
         rs.next();
         String count = rs.getString("capacity");

@@ -58,6 +58,12 @@ public class Login
 
             return "ok";
         }
+
+        @GetMapping("/getconnection")
+        public String getconnection()
+        {
+            return "ok";
+        }
     private UserRepository userRepository;
 
         @GetMapping("/getsemester/{id}")

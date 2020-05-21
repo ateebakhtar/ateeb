@@ -46,6 +46,7 @@ public class Reminder
         int i = Integer.parseInt(id);
         String sqlQuery = "insert into reminder (date,time,type,course,usrid,status,priority) values ('"+date+"','"+time+"','"+type+"','"+CN+"',"+i+",'incomplete','"+prio+"');";
         //stmt.executeQuery(sqlQuery);
+        System.out.println(i);
         stmt.execute(sqlQuery);
         return "ok";
     }

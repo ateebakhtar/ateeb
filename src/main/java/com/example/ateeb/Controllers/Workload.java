@@ -39,41 +39,54 @@ public class Workload
 
         String[] qw = new String[7];
 
+
         Connection db = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=MunazamDB","Munazam","lotus123");
+
         Statement stmt = db.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE , ResultSet.CONCUR_READ_ONLY );
-        int idtt = Integer.parseInt(id12);
+
         String sqlQuery = "select * from reminder ;";
         rs = stmt.executeQuery(sqlQuery);
+
         if(!rs.next())
         {
             return null;
         }
+
         ob = new com.example.ateeb.Models.Workload();
         wk = new ArrayList<com.example.ateeb.Models.Workload>();
 
-
+        //getting the current date
         LocalDate current = LocalDate.now();
 
+        //size of the data from db
         int sizer = 0;
         while (rs.next())
         {
             sizer++;
         }
         rs.first();
-        String[] x = new String[15];
+
+        //days of the week
+        String[] daysoftheweek = new String[15];
+
         int[] prio = new int[15];
+
         long[] currentdate = new long[sizer];
+
         for(int i=0;i<6;i++)
         {
-            x[i] = ""+current.getDayOfWeek();
+            daysoftheweek[i] = ""+current.getDayOfWeek();
             current = current.plusDays(1);
         }
         current = LocalDate.now();
 
+
         double[] ratios = new double[sizer];
+
         int counter = 0;
+
         long noOfDaysBetween = 0;
-        rs.getFetchSize();
+
         while(rs.next())
         {
             if(rs.getString("status").equals("incomplete"))
@@ -85,11 +98,11 @@ public class Workload
                 int day = Integer.parseInt(DM[0]);
                 int month = Integer.parseInt(DM[1]);
 
-                LocalDate inputDate = LocalDate.of(2019,month,day);
+                LocalDate inputDate = LocalDate.of(2020,month,day);
                 noOfDaysBetween = ChronoUnit.DAYS.between(current , inputDate);
 
                 currentdate[counter] = noOfDaysBetween;
-                if(currentdate[counter]>0)
+                if(currentdate[counter]>0 && noOfDaysBetween >0)
                 {
                     ratios[counter] = currentdate[counter] / p;
                 }
@@ -104,7 +117,7 @@ public class Workload
         rs.first();
         for(int i=0;i<7;i++) {
             rs.first();
-            x[i] = "" + current.getDayOfWeek();
+            daysoftheweek[i] = "" + current.getDayOfWeek();
             current = current.plusDays(1);
             int trackeddays = 0;
             double[] temp = ratios;
@@ -112,6 +125,7 @@ public class Workload
             {
                 if (currentdate[j] <= 4 && currentdate[j] > 0)
                 {
+                    System.out.println(currentdate[j] );
                     rs.absolute(j + 1);
                     com.example.ateeb.Models.Workload ob = new com.example.ateeb.Models.Workload();
                     ob.insert("" + (i), rs.getString("type"), rs.getString("course"), "" + currentdate[j],""+rs.getString("ID"));
@@ -121,7 +135,7 @@ public class Workload
                 }
             }
 
-            if(trackeddays < 3 && !x[i].equals("SATURDAY") && !x[i].equals("SUNDAY"))// current day is not saturday or sunday
+            if(trackeddays < 3 &&  !daysoftheweek[i].equals("SATURDAY") && !daysoftheweek[i].equals("SUNDAY"))// current day is not saturday or sunday
             {
                 switch (trackeddays)
                 {
@@ -135,7 +149,8 @@ public class Workload
                             {
                                 if(temp[m]<max && currentdate[m] > 0 && temp[m]>0)
                                 {
-                                    max = temp[m];
+                                    System.out.println(currentdate[m] );
+                                     max = temp[m];
                                     maxindex = m;
                                 }
                             }
@@ -161,6 +176,7 @@ public class Workload
                             {
                                 if(temp[m]<max && currentdate[m] > 0 && temp[m]>0)
                                 {
+                                    System.out.println(currentdate[m]);
                                     max = temp[m];
                                     maxindex = m;
                                 }
@@ -186,8 +202,10 @@ public class Workload
                         {
                             for(int m=0;m<temp.length;m++)
                             {
+
                                 if(temp[m]<max && currentdate[m] > 0 && temp[m]>0)
                                 {
+                                    System.out.println(currentdate[m]);
                                     max = temp[m];
                                     maxindex = m;
                                 }
@@ -203,7 +221,7 @@ public class Workload
                     }
                 }
             }
-            else if(trackeddays < 6 && x[i].equals("SATURDAY") || x[i].equals("SUNDAY"))
+            else if(trackeddays < 6 && trackeddays >=0 && daysoftheweek[i].equals("SATURDAY") || daysoftheweek[i].equals("SUNDAY"))
             {
                 switch (trackeddays)
                 {
