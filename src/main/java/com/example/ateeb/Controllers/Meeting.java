@@ -100,7 +100,7 @@ public class Meeting
 
         Connection db = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=MunazamDB","Munazam","lotus123");
         Statement stmt = db.createStatement( );
-        String sqlQuery = "select * from meetinglist as x,meetingattendee as y where y.student_id = '"+uniid+"' and x.ID = y.meetingid;";
+        String sqlQuery = "select * from meetinglist as x,meetingattendee as y where y.student_id like '"+uniid+"' and x.ID = y.meetingid;";
 
         ArrayList<MeetingModel> rem = new ArrayList<MeetingModel>();
         ResultSet rs = stmt.executeQuery(sqlQuery);

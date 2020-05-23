@@ -73,22 +73,18 @@ public class Login
             int idd = Integer.parseInt(id);
             String sqlQuery = "select * from users where ID = "+idd+";";
             ResultSet rs = stmt.executeQuery(sqlQuery);
-            rs.next();
+            //rs.next();
             String sem = "1";
-            if(!rs.next())
+            if(rs.next())
             {
-                return "3";
-            }
-            if(rs.getString("semester")!=null)
-            {
-                 sem = rs.getString("semester");
+                sem = rs.getString("semester");
+                return sem;
             }
             else
             {
-                sem = "3";
+                return "3";
             }
 
-            return sem;
         }
 
     @GetMapping("/login/{name}/{password}")

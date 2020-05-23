@@ -44,11 +44,12 @@ public class Workload
 
         Statement stmt = db.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE , ResultSet.CONCUR_READ_ONLY );
 
-        String sqlQuery = "select * from reminder ;";
+        String sqlQuery = "select * from reminder where reminder.usrid = "+Integer.parseInt(id12)+";";
         rs = stmt.executeQuery(sqlQuery);
 
         if(!rs.next())
         {
+            System.out.println("NULLL");
             return null;
         }
 
